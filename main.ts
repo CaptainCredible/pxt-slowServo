@@ -1,2 +1,2 @@
-let myServo = slowServo.create(AnalogPin.P0)
-myServo.moveTo(90, 10)
+let slowservo = slowServo.create(AnalogPin.P0)
+slowservo.moveTo(90, 10)

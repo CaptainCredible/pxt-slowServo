@@ -18,10 +18,17 @@ namespace slowServo {
     export class Servo {
         private currentPosition: number;
         private pin: AnalogPin;
-        constructor(servoPin: AnalogPin) {
-            this.pin = servoPin;
+
+        constructor() {
             this.currentPosition = 90; // Default to middle position
-            pins.servoWritePin(this.pin, this.currentPosition); // Set initial position
+        }
+
+        /**
+         * Set up the servo by setting the pin and initial position
+         */
+        setPin(servoPin: AnalogPin): void {
+            this.pin = servoPin;
+            pins.servoWritePin(this.pin, this.currentPosition);
         }
 
         /**
@@ -37,6 +44,7 @@ namespace slowServo {
                 this.currentPosition += increment;
                 pins.servoWritePin(this.pin, this.currentPosition);
                 basic.pause(step); // Slow down the motion
+                led.plotBarGraph(this.currentPosition,180)
             }
         }
 
@@ -50,11 +58,15 @@ namespace slowServo {
     }
 
     /**
-     * Create a new servo instance
+     * Create a new Servo driver for the specified pin.
      * @param servoPin the pin where the servo is connected
      */
-    //% block
+    //% blockId="slowServo_create" block="slowServo at pin %servoPin"
+    //% weight=90 blockGap=8
+    //% blockSetVariable=slowservo
     export function create(servoPin: AnalogPin): Servo {
-        return new Servo(servoPin);
+        let servo = new Servo();
+        servo.setPin(servoPin); // Initialize the pin
+        return servo;
     }
 }
