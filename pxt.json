@@ -1,5 +1,5 @@
 {
-    "name": "slowServoLib - Copy",
+    "name": "slowServoLib",
     "description": "",
     "dependencies": {
         "core": "*",

@@ -1,16 +1,4 @@
 /**
-* Use this file to define custom functions and blocks.
-* Read more at https://makecode.microbit.org/blocks/custom
-*/
-
-enum MyEnum {
-    //% block="one"
-    One,
-    //% block="two"
-    Two
-}
-
-/**
  * Custom blocks
  */
 //% weight=100 color=#0fbc11 icon=""
@@ -28,25 +16,27 @@ namespace slowServo {
          */
         setPin(servoPin: AnalogPin): void {
             this.pin = servoPin;
-            pins.servoWritePin(this.pin, this.currentPosition);
+            pins.servoWritePin(this.pin, this.currentPosition);  // Use this.pin here
         }
 
         /**
          * Move the servo to a target position gradually
          * @param targetPosition the target angle to move to, eg: 90
          * @param step delay between steps in milliseconds, eg: 10
-         * //% parts=microservo trackArgs=0
+         * @parts=microservo trackArgs=0
          */
         //% block
         moveTo(targetPosition: number, step: number): void {
             const increment = targetPosition > this.currentPosition ? 1 : -1;
+            control.inBackground(function () {
+                while (this.currentPosition != targetPosition) {
+                    this.currentPosition += increment;
+                    // Ensure this.pin is used here
+                    pins.servoWritePin(this.pin, this.currentPosition);
+                    basic.pause(step); // Slow down the motion
+                }
+            })
 
-            while (this.currentPosition != targetPosition) {
-                this.currentPosition += increment;
-                pins.servoWritePin(this.pin, this.currentPosition);
-                basic.pause(step); // Slow down the motion
-                led.plotBarGraph(this.currentPosition,180)
-            }
         }
 
         /**
