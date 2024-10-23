@@ -35,6 +35,7 @@ namespace slowServo {
          * Move the servo to a target position gradually
          * @param targetPosition the target angle to move to, eg: 90
          * @param step delay between steps in milliseconds, eg: 10
+         * //% parts=microservo trackArgs=0
          */
         //% block
         moveTo(targetPosition: number, step: number): void {
